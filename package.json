@@ -1,0 +1,55 @@
+{
+  "name": "docw",
+  "version": "0.1.0",
+  "description": "Zero-glue document parser & AI extraction toolkit. Load PDF, DOCX, TXT, and ask questions or extract guaranteed typed JSON with Zod.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean",
+    "dev": "tsup src/index.ts --format esm,cjs --dts --watch",
+    "test": "tsx --test test/*.test.ts",
+    "docw:test": "tsx --test test/*.test.ts",
+    "docw-test": "tsx --test test/*.test.ts"
+  },
+  "keywords": [
+    "pdf",
+    "docx",
+    "parser",
+    "ai",
+    "llm",
+    "openai",
+    "gemini",
+    "openrouter",
+    "zod",
+    "structured-output",
+    "document-ai"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "mammoth": "^1.9.0",
+    "unpdf": "^1.8.1",
+    "xlsx": "^0.18.5",
+    "zod": "^3.24.2",
+    "zod-to-json-schema": "^3.24.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.4",
+    "tsup": "^8.4.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  }
+}
