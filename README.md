@@ -1,22 +1,22 @@
-# docw 📄⚡
+# pageslice 📄⚡
 
 > **Zero-glue document parser & AI extraction toolkit for Node.js & TypeScript.**  
-> Turn any **PDF**, **DOCX**, **TXT**, or **Markdown** into raw text or **guaranteed typed JSON** using Zod schemas.
+> Slice any **PDF**, **DOCX**, **XLSX**, **TXT**, or **Markdown** into raw text or **guaranteed typed JSON** using Zod schemas.
 
-[![npm version](https://img.shields.io/npm/v/docw.svg)](https://www.npmjs.com/package/docw)
+[![npm version](https://img.shields.io/npm/v/pageslice.svg)](https://www.npmjs.com/package/pageslice)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Zero Native Dependencies](https://img.shields.io/badge/dependencies-pure%20JS%20(no%20node--gyp)-green.svg)]()
 
 ---
 
-## Why `docw`?
+## Why `pageslice`?
 
 Every developer building document AI in JavaScript/TypeScript knows the pain:
 - Installing `pdf-parse`, `mammoth`, and fighting `node-gyp` / C++ native build errors in Next.js, Vercel, and Docker.
 - Writing 80+ lines of glue code to handle file formats, buffers, and clean whitespace.
 - Dealing with LLMs returning broken JSON or missing schema fields.
 
-**`docw` eliminates all of that.** One single package. Zero native C++ dependencies. Pure JavaScript. Works offline for text parsing, and supports **OpenAI**, **Google Gemini**, **OpenRouter**, or local **Ollama** for AI.
+**`pageslice` eliminates all of that.** One single package. Zero native C++ dependencies. Pure JavaScript. Works offline for text parsing, and supports **OpenAI**, **Google Gemini**, **OpenRouter**, or local **Ollama** for AI.
 
 ---
 
@@ -27,33 +27,60 @@ Every developer building document AI in JavaScript/TypeScript knows the pain:
 - ⚡ **Zero Native C++ Dependencies**: No `node-gyp`, `canvas`, or `poppler`. Runs cleanly on **Next.js**, **Vercel Serverless**, **AWS Lambda**, and **Bun**.
 - 📊 **Smart Excel → Markdown Tables**: Converts spreadsheet sheets into clean markdown tables for optimal LLM comprehension and structured extraction.
 - 🎯 **Guaranteed Type-Safe JSON**: Built-in Zod schema validation.
-- 🔄 **Self-Healing Retries**: If an LLM returns invalid JSON or misses fields, `docw` automatically reprompts with the validation errors and fixes it.
+- 🔄 **Self-Healing Retries**: If an LLM returns invalid JSON or misses fields, `pageslice` automatically reprompts with the validation errors and fixes it.
 - 🔑 **Bring Your Own Key (BYOK)**: Supports OpenAI, OpenRouter (100+ models), Google Gemini, and any custom OpenAI-compatible endpoint.
 - 🌐 **Universal Inputs**: Accepts file paths, Node `Buffer`, `Uint8Array`, web `URL`, and browser `Blob`/`File`.
-- 🧩 **Zod Re-exported**: Use `import { z } from 'zod'` or `import { z } from 'docw'` — both work seamlessly.
+- 🧩 **Zod Re-exported**: Use `import { z } from 'zod'` or `import { z } from 'pageslice'` — both work seamlessly.
 
 ---
 
 ## Installation
 
 ```bash
-npm install docw
+npm install pageslice
 # or
-pnpm add docw
+pnpm add pageslice
 # or
-bun add docw
+bun add pageslice
 ```
 
 ---
 
-## Quickstart
+## ⚡ Instant CLI Commands (Zero Code Required)
+
+You don't even need to write a line of code to test or parse documents. You can run `pageslice` directly from your terminal using `npx`:
+
+### 1. Run Live Diagnostic Test (See Real Files Parsed Live)
+Runs built-in parsers on real PDF, DOCX, and XLSX files and prints the **entire extracted text and markdown tables** right on your screen:
+
+```bash
+npx pageslice test
+```
+
+### 2. Parse Any File Directly from Your Terminal
+Extract and inspect text or tables from any local document in 50ms:
+
+```bash
+# Parse a PDF file
+npx pageslice ./resume.pdf
+
+# Parse an Excel spreadsheet into Markdown tables
+npx pageslice ./sales.xlsx
+
+# Parse a Word document
+npx pageslice ./contract.docx
+```
+
+---
+
+## Code Quickstart
 
 ### 1. Plain Text Extraction (NO API Keys Required, 100% Offline)
 
 If you just want the raw text from any PDF, Word doc, Excel spreadsheet, or text file:
 
 ```typescript
-import { parse } from 'docw';
+import { parse } from 'pageslice';
 
 // Works instantly, offline, zero API keys required!
 const document = await parse('./contract.pdf'); // or .docx, .xlsx, .txt, .json
@@ -68,7 +95,7 @@ console.log(document.totalPages); // e.g. 5
 Excel files are automatically converted into clean markdown tables — perfect for LLM comprehension:
 
 ```typescript
-import { parse } from 'docw';
+import { parse } from 'pageslice';
 
 const spreadsheet = await parse('./sales-data.xlsx');
 
@@ -88,13 +115,14 @@ console.log(spreadsheet.totalPages);  // Number of sheets
 console.log(spreadsheet.metadata);    // { sheetNames: ['Q1 Sales', 'Q2 Sales'], totalSheets: 2 }
 ```
 
+---
 
 ### 2. AI Q&A & Guaranteed Typed JSON (Zod)
 
 When you want AI Q&A or structured JSON extraction:
 
 ```typescript
-import { doc, z } from 'docw'; // or import { z } from 'zod'
+import { doc, z } from 'pageslice'; // or import { z } from 'zod'
 
 // 1. Load document (auto-detects format)
 const document = await doc('./invoice.pdf', {
@@ -132,7 +160,7 @@ console.log(data.vendorName, data.totalAmount);
 
 ### 1. OpenAI Setup
 ```typescript
-import { doc } from 'docw';
+import { doc } from 'pageslice';
 
 const document = await doc('./invoice.pdf', {
   provider: 'openai',
@@ -143,7 +171,7 @@ const document = await doc('./invoice.pdf', {
 
 ### 2. Google Gemini Setup
 ```typescript
-import { doc } from 'docw';
+import { doc } from 'pageslice';
 
 const document = await doc('./invoice.pdf', {
   provider: 'gemini',
@@ -154,7 +182,7 @@ const document = await doc('./invoice.pdf', {
 
 ### 3. OpenRouter Setup (100+ Models: Claude 3.5 Sonnet, Llama 3, DeepSeek)
 ```typescript
-import { doc } from 'docw';
+import { doc } from 'pageslice';
 
 const document = await doc('./invoice.pdf', {
   provider: 'openrouter',
@@ -165,7 +193,7 @@ const document = await doc('./invoice.pdf', {
 
 ### 4. Local Ollama / vLLM / Custom Setup (Free & Offline AI)
 ```typescript
-import { doc } from 'docw';
+import { doc } from 'pageslice';
 
 const document = await doc('./file.pdf', {
   provider: 'custom',
@@ -178,7 +206,7 @@ const document = await doc('./file.pdf', {
 If you put `OPENROUTER_API_KEY`, `OPENAI_API_KEY`, or `GEMINI_API_KEY` in your `.env` file, **you don't even need to pass options**:
 
 ```typescript
-import { doc } from 'docw';
+import { doc } from 'pageslice';
 
 // Automatically detects process.env.OPENROUTER_API_KEY or OPENAI_API_KEY!
 const document = await doc('./file.pdf');
@@ -189,7 +217,7 @@ const answer = await document.ask('What is this file about?');
 
 ## Universal Input Support
 
-`docw` handles any input type without requiring manual conversions:
+`pageslice` handles any input type without requiring manual conversions:
 
 ```typescript
 // Local file path
@@ -217,7 +245,7 @@ await doc('Company policy notes...');
 ```typescript
 // app/api/parse-doc/route.ts
 import { NextResponse } from 'next/server';
-import { doc, z } from 'docw';
+import { doc, z } from 'pageslice';
 
 export async function POST(req: Request) {
   const formData = await req.formData();
@@ -247,7 +275,7 @@ export async function POST(req: Request) {
 ```typescript
 import express from 'express';
 import multer from 'multer';
-import { doc, z } from 'docw';
+import { doc, z } from 'pageslice';
 
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -270,21 +298,21 @@ app.post('/api/parse', upload.single('document'), async (req, res) => {
 Configure your provider once at the top of your app and use it across multiple API routes:
 
 ```typescript
-// lib/docw.ts
-import { createDocClient } from 'docw';
+// lib/docClient.ts
+import { createDocClient } from 'pageslice';
 
-export const docwClient = createDocClient({
+export const client = createDocClient({
   provider: 'openrouter',
   apiKey: process.env.OPENROUTER_API_KEY,
   model: 'anthropic/claude-3.5-sonnet',
 });
 
 // In any server action or route:
-import { docwClient } from '@/lib/docw';
+import { client } from '@/lib/docClient';
 import { z } from 'zod';
 
 export async function processUpload(fileBuffer: Buffer) {
-  const document = await docwClient.load(fileBuffer);
+  const document = await client.load(fileBuffer);
   
   return await document.extractData({
     schema: z.object({ title: z.string(), total: z.number() }),
@@ -296,10 +324,12 @@ export async function processUpload(fileBuffer: Buffer) {
 
 ## Comparison
 
-| Feature | LangChain JS | Raw `pdf-parse` / `mammoth` | **`docw`** |
+| Feature | LangChain JS | Raw `pdf-parse` / `mammoth` | **`pageslice`** |
 | :--- | :--- | :--- | :--- |
-| **npm packages required** | 6 to 8 | 3 to 5 | **Just 1 (`docw`)** |
+| **npm packages required** | 6 to 8 | 3 to 5 | **Just 1 (`pageslice`)** |
 | **Native C++ build issues?** | Frequently | Frequently | **Zero (`pure JS`)** |
+| **Instant CLI testing** | ❌ No | ❌ No | **✅ Yes (`npx pageslice test`)** |
+| **Direct terminal file parser** | ❌ No | ❌ No | **✅ Yes (`npx pageslice <file>`)** |
 | **Text parsing offline (No API key)** | ❌ No | ✅ Yes | **✅ Yes (`parse()`)** |
 | **Supported formats** | Separate loaders per format | PDF or DOCX only | **PDF, DOCX, XLSX, TXT, MD, CSV, JSON** |
 | **Excel → Markdown tables** | ❌ No | ❌ No | **✅ Auto-converts sheets to tables** |
@@ -308,14 +338,14 @@ export async function processUpload(fileBuffer: Buffer) {
 
 ---
 
-## 🧪 Verify & Run Tests (Build Trust)
+## 🧪 Run Test Suite
 
-You can run the built-in test suite to see `docw` parse real documents live and print the full extracted text:
+You can clone the repository and run the test suite:
 
 ```bash
 npm test
 # or
-npm run docw:test
+npm run pageslice:test
 ```
 
 All tests run **100% offline in pure JavaScript** without requiring any API keys or internet connection.
@@ -324,5 +354,4 @@ All tests run **100% offline in pure JavaScript** without requiring any API keys
 
 ## License
 
-MIT © [docw Contributors](LICENSE)
-
+MIT © [pageslice Contributors](LICENSE)

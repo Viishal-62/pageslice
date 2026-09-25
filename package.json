@@ -1,10 +1,13 @@
 {
-  "name": "docw",
-  "version": "0.1.0",
-  "description": "Zero-glue document parser & AI extraction toolkit. Load PDF, DOCX, TXT, and ask questions or extract guaranteed typed JSON with Zod.",
+  "name": "pageslice",
+  "version": "0.1.1",
+  "description": "Zero-glue document parser & AI extraction toolkit. Slice any PDF, DOCX, XLSX, TXT into raw text or guaranteed typed JSON with Zod.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "bin": {
+    "pageslice": "./bin/cli.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -14,6 +17,8 @@
   },
   "files": [
     "dist",
+    "bin",
+    "test",
     "README.md",
     "LICENSE"
   ],
@@ -21,8 +26,7 @@
     "build": "tsup src/index.ts --format esm,cjs --dts --clean",
     "dev": "tsup src/index.ts --format esm,cjs --dts --watch",
     "test": "tsx --test test/*.test.ts",
-    "docw:test": "tsx --test test/*.test.ts",
-    "docw-test": "tsx --test test/*.test.ts"
+    "pageslice:test": "tsx --test test/*.test.ts"
   },
   "keywords": [
     "pdf",
